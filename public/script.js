@@ -14,6 +14,7 @@ class TouchDesignerClient {
     initializeElements() {
         this.statusEl = document.getElementById('status');
         this.connectBtn = document.getElementById('connectBtn');
+        this.websocketUrlInput = document.getElementById('websocketUrl');
         this.dataInput = document.getElementById('dataInput');
         this.sendBtn = document.getElementById('sendBtn');
         this.messageLog = document.getElementById('messageLog');
@@ -72,36 +73,56 @@ class TouchDesignerClient {
     }
 
     connect() {
+        const url = this.websocketUrlInput.value.trim();
+        if (!url) {
+            alert('WebSocket URL을 입력하세요.');
+            return;
+        }
+
+        if (!this.isValidWebSocketUrl(url)) {
+            alert('유효한 WebSocket URL을 입력하세요. (예: ws://localhost:8080 또는 wss://example.com)');
+            return;
+        }
+
         try {
-            this.ws = new WebSocket('ws://localhost:8080');
+            this.ws = new WebSocket(url);
 
             this.ws.onopen = () => {
                 this.isConnected = true;
                 this.updateUI();
-                this.logMessage('서버에 연결되었습니다.');
+                alert(`${url}에 연결되었습니다.`);
             };
 
             this.ws.onmessage = (event) => {
                 try {
                     const data = JSON.parse(event.data);
-                    this.logMessage(`수신: ${JSON.stringify(data)}`);
+                    console.log(`수신: ${JSON.stringify(data)}`);
                 } catch (error) {
-                    this.logMessage(`수신: ${event.data}`);
+                    console.log(`수신: ${event.data}`);
                 }
             };
 
             this.ws.onclose = () => {
                 this.isConnected = false;
                 this.updateUI();
-                this.logMessage('연결이 끊어졌습니다.');
+                alert('연결이 끊어졌습니다.');
             };
 
             this.ws.onerror = (error) => {
-                this.logMessage(`연결 오류: ${error.message || '알 수 없는 오류'}`);
+                alert(`연결 오류: ${error.message || '알 수 없는 오류'}`);
             };
 
         } catch (error) {
-            this.logMessage(`연결 실패: ${error.message}`);
+            alert(`연결 실패: ${error.message}`);
+        }
+    }
+
+    isValidWebSocketUrl(url) {
+        try {
+            const urlObj = new URL(url);
+            return urlObj.protocol === 'ws:' || urlObj.protocol === 'wss:';
+        } catch (error) {
+            return false;
         }
     }
 
@@ -113,13 +134,15 @@ class TouchDesignerClient {
 
     sendData() {
         if (!this.isConnected || !this.ws) {
-            this.logMessage('서버에 연결되지 않았습니다.');
+            alert('서버에 연결되지 않았습니다.');
             return;
         }
 
+        if (!this.dataInput) return;
+
         const inputValue = this.dataInput.value.trim();
         if (!inputValue) {
-            this.logMessage('전송할 데이터를 입력하세요.');
+            alert('전송할 데이터를 입력하세요.');
             return;
         }
 
@@ -131,10 +154,10 @@ class TouchDesignerClient {
             };
 
             this.ws.send(JSON.stringify(data));
-            this.logMessage(`전송: ${JSON.stringify(data)}`);
+            console.log(`전송: ${JSON.stringify(data)}`);
             this.dataInput.value = '';
         } catch (error) {
-            this.logMessage(`전송 오류: ${error.message}`);
+            alert(`전송 오류: ${error.message}`);
         }
     }
 
@@ -151,9 +174,9 @@ class TouchDesignerClient {
             };
 
             this.ws.send(JSON.stringify(data));
-            this.logMessage(`슬라이더 전송: ${JSON.stringify(this.sliderValues)}`);
+            console.log(`슬라이더 전송: ${JSON.stringify(this.sliderValues)}`);
         } catch (error) {
-            this.logMessage(`슬라이더 전송 오류: ${error.message}`);
+            console.log(`슬라이더 전송 오류: ${error.message}`);
         }
     }
 
