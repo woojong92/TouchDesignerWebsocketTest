@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TouchDesigner WebSocket Client</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        max-width: 600px;
+        margin: 50px auto;
+        padding: 20px;
+        background: #f5f5f5;
+      }
+      .container {
+        background: white;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+      h1 {
+        text-align: center;
+        color: #333;
+      }
+      .status {
+        padding: 10px;
+        margin: 10px 0;
+        border-radius: 5px;
+        text-align: center;
+      }
+      .connected {
+        background: #d4edda;
+        color: #155724;
+        border: 1px solid #c3e6cb;
+      }
+      .disconnected {
+        background: #f8d7da;
+        color: #721c24;
+        border: 1px solid #f5c6cb;
+      }
+      .input-group {
+        margin: 20px 0;
+      }
+      label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+      }
+      input {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        font-size: 16px;
+      }
+      button {
+        background: #007bff;
+        color: white;
+        border: none;
+        padding: 12px 24px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        width: 100%;
+        margin: 10px 0;
+      }
+      button:hover {
+        background: #0056b3;
+      }
+      button:disabled {
+        background: #6c757d;
+        cursor: not-allowed;
+      }
+      .messages {
+        margin-top: 20px;
+        padding: 15px;
+        background: #f8f9fa;
+        border-radius: 5px;
+        max-height: 200px;
+        overflow-y: auto;
+      }
+      .slider-container {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      input[type="range"] {
+        flex: 1;
+      }
+      .slider-value {
+        min-width: 60px;
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>TouchDesigner WebSocket Client</h1>
+
+      <div id="status" class="status disconnected">연결 끊어짐</div>
+
+      <button id="connectBtn">연결</button>
+
+      <div class="input-group">
+        <label for="slider1">Wind X:</label>
+        <div class="slider-container">
+          <input
+            type="range"
+            id="slider1"
+            min="0"
+            max="1"
+            step="0.01"
+            value="0.5"
+            disabled
+          />
+          <span id="slider1Value" class="slider-value">0.5</span>
+        </div>
+      </div>
+
+      <div class="input-group">
+        <label for="slider2">Wind Y:</label>
+        <div class="slider-container">
+          <input
+            type="range"
+            id="slider2"
+            min="0"
+            max="1"
+            step="0.01"
+            value="0.5"
+            disabled
+          />
+          <span id="slider2Value" class="slider-value">0.5</span>
+        </div>
+      </div>
+
+      <div class="input-group">
+        <label for="slider3">Level:</label>
+        <div class="slider-container">
+          <input
+            type="range"
+            id="slider3"
+            min="0"
+            max="1"
+            step="0.01"
+            value="0.5"
+            disabled
+          />
+          <span id="slider3Value" class="slider-value">0.5</span>
+        </div>
+      </div>
+
+      <!-- <div class="input-group">
+            <label for="dataInput">전송할 데이터:</label>
+            <input type="text" id="dataInput" placeholder="데이터를 입력하세요" disabled>
+        </div>
+
+        <button id="sendBtn" disabled>데이터 전송</button> -->
+
+      <!-- <div class="messages">
+            <h4>메시지 로그:</h4>
+            <div id="messageLog"></div>
+        </div> -->
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>

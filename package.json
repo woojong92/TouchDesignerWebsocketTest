@@ -1,0 +1,16 @@
+{
+  "name": "td-socket",
+  "version": "1.0.0",
+  "description": "Simple WebSocket communication with TouchDesigner",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "ws": "^8.14.2"
+  },
+  "keywords": ["websocket", "touchdesigner", "realtime"],
+  "author": "",
+  "license": "MIT"
+}
